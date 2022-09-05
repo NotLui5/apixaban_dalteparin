@@ -1,0 +1,66 @@
+---
+title: "apixaban_dalteparin"
+author: "Luis Armando Figueroa"
+date: '2022-09-05'
+output: html_document
+---
+
+```{r libraries, include=FALSE}
+library(metafor)
+library(openxlsx)
+```
+
+```{r cleaning, include=FALSE}
+dat <- read.xlsx("Extraccion de datos texto completo_updated.xlsx", sheet = 2)
+
+dat_m <- subset(dat, Outcome == "Sangrado Mayor")
+dat_m
+
+dat_m2 <- dat_m[-3,]
+dat_m2
+
+dat_nm <- subset(dat, Outcome == "Sangrado no mayor")
+dat_nm
+
+dat_te <- subset(dat, Outcome == "rec TE")
+dat_te
+
+dat_te2 <- dat_te[-1,]
+dat_te2
+```
+
+```{r or, include=FALSE}
+dat_m2 <- escalc(measure="OR", ai=n1, bi=n2,
+              ci=e1, di=e2, data=dat_m2)
+dat_m2
+
+dat_nm <- escalc(measure="OR", ai=n1, bi=n2,
+                ci=e1, di=e2, data=dat_nm)
+dat_nm
+
+dat_te2 <- escalc(measure="OR", ai=n1, bi=n2,
+                 ci=e1, di=e2, data=dat_te2)
+dat_te2
+```
+
+```{r meta, include=FALSE}
+meta_datm_reml <- rma(yi, vi, method="REML", data=dat_m2)
+meta_datm_reml
+
+meta_datnm_reml <- rma(yi, vi, method="REML", data=dat_nm)
+meta_datnm_reml
+
+meta_datte_reml <- rma(yi, vi, method="REML", data=dat_te2)
+meta_datte_reml
+```
+
+```{r predict, include=FALSE}
+meta_m <- predict(meta_datm_reml, transf = exp, digits = 2)
+meta_m
+
+meta_nm <- predict(meta_datnm_reml, transf = exp, digits = 2)
+meta_nm
+
+meta_te <- predict(meta_datte_reml, transf = exp, digits = 2)
+meta_te
+```
