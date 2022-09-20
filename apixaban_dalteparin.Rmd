@@ -66,7 +66,7 @@ meta_datm_reml
 meta_datm_pm <- rma(yi, vi, method="PM", data=dat_m, test='knha')
 meta_datm_pm
 
-meta_datm2_reml <- rma(yi, vi, method="REML", data=dat_m2, x)
+meta_datm2_reml <- rma(yi, vi, method="REML", data=dat_m2, test = 'knha')
 meta_datm2_reml
 
 meta_datnm_reml <- rma(yi, vi, method="REML", data=dat_nm, test='knha')
@@ -585,7 +585,7 @@ sizes1f <- c(NA, (weights(meta_datm_reml)*0.020), 1, rep(NA, 3),
              NA, (weights(meta_datnm_reml)*0.015), 1, rep(NA, 3), 
              NA, (weights(meta_datte_reml)*0.020), 1, NA)
 
-plotf <- forestplot(text1f,
+plotf <- forestplot(text1f, 
              graph.pos = 4,
              zero = 1,
              cf,
