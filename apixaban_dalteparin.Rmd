@@ -10,6 +10,8 @@ library(metafor)
 library(openxlsx)
 library(forestplot)
 library(dplyr)
+
+knitr::opts_chunk$set(fig.path = "8 Output Figures/", dev='svg') # dev = 'png'
 ```
 
 ```{r cleaning, include=FALSE}
@@ -66,7 +68,11 @@ meta_datm_reml
 meta_datm_pm <- rma(yi, vi, method="PM", data=dat_m, test='knha')
 meta_datm_pm
 
+<<<<<<< HEAD
 meta_datm2_reml <- rma(yi, vi, method="REML", data=dat_m2, test = 'knha')
+=======
+meta_datm2_reml <- rma(yi, vi, method="REML", data=dat_m2, test='knha')
+>>>>>>> 1f37a0f65d7f422e795ff9c0ee260d14b440d1fa
 meta_datm2_reml
 
 meta_datnm_reml <- rma(yi, vi, method="REML", data=dat_nm, test='knha')
@@ -111,7 +117,13 @@ meta_te2 <- predict(meta_datte2_reml, transf = exp, digits = 2)
 meta_te2
 ```
 
-```{r graphics, include=FALSE}
+
+<h4>Major bleeding graph in REML </h4>
+
+<details>
+
+<summary><b>Figure -</b> Odds Ratio of developing Major Bleeding Events in the Dalteparin group vs the Apixaban group </summary>
+```{r major_bleeding_graphs_reml, echo=FALSE, fig.height = 2, fig.width = 13}
 col1m <- c("Author", dat_m$Author, 
       paste("Overall Odds Ratio for", meta_datm_reml$k, "studies"),
       paste("(Tau^2 = ", (formatC(meta_datm_reml$tau2, digits=2, format="f")), ", df = ", 
@@ -164,18 +176,20 @@ plotm <- forestplot(text1m,
                               ticks = gpar(cex = 0.9, fontface="bold"),
                               summary = gpar(cex = 0.9),
                               xlab = gpar(cex=0.9)),
-             xticks = c(0.1,0.25, 0.50, 1, 2,4, 10),
+             xticks = c(0.025, 0.25, 1, 4,  40),
              xlog=TRUE,
-             clip = c(0.2, 10),
-             grid = c(0.1,0.25, 0.50,  2,4,10),
+             clip = c(0.025, 40),
+             grid = c(0.025, 0.25,  4, 40),
              lwd.xaxis = 1,
              lwd.ci = 2.2,
              lwd.zero = 2,
              graphwidth = unit(10,"cm"),
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotm
+```
+</details>
 
-
+```{r major_bleeding_graphs_pm, echo=FALSE, fig.height = 3, fig.width = 16}
 col1mpm <- c("Author", dat_m$Author, 
       paste("Overall Odds Ratio for", meta_datm_pm$k, "studies"),
       paste("(Tau^2 = ", (formatC(meta_datm_pm$tau2, digits=2, format="f")), ", df = ", 
@@ -238,8 +252,9 @@ plotmpm <- forestplot(text1mpm,
              graphwidth = unit(10,"cm"),
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotmpm
+```
 
-
+```{r no_major_bleeding_graphs_reml, echo=FALSE, fig.height = 3, fig.width = 16}
 col1nm <- c("Author", dat_nm$Author, 
       paste("Overall Odds Ratio for", meta_datnm_reml$k, "studies"),
       paste("(Tau^2 = ", (formatC(meta_datnm_reml$tau2, digits=2, format="f")), ", df = ", 
@@ -303,8 +318,9 @@ plotnm <- forestplot(text1nm,
              graphwidth = unit(10,"cm"),
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotnm
+```
 
-
+```{r no_major_bleeding_graphs_pm, echo=FALSE, fig.height = 3, fig.width = 16}
 col1nmpm <- c("Author", dat_nm$Author, 
       paste("Overall Odds Ratio for", meta_datnm_pm$k, "studies"),
       paste("(Tau^2 = ", (formatC(meta_datnm_pm$tau2, digits=2, format="f")), ", df = ", 
@@ -367,8 +383,9 @@ plotnmpm <- forestplot(text1nmpm,
              graphwidth = unit(10,"cm"),
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotnmpm
+```
 
-
+```{r TE_recurrence_REML, echo=FALSE, fig.height = 3, fig.width = 16}
 col1te <- c("Author", dat_te$Author, 
       paste("Overall Odds Ratio for", meta_datte_reml$k, "studies"),
       paste("(Tau^2 = ", (formatC(meta_datte_reml$tau2, digits=2, format="f")), ", df = ", 
@@ -432,8 +449,9 @@ plotte <- forestplot(text1te,
              graphwidth = unit(10,"cm"),
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotte
+```
 
-
+```{r TE_recurrence_PM, echo=FALSE, fig.height = 3, fig.width = 16}
 col1tepm <- c("Author", dat_te$Author, 
       paste("Overall Odds Ratio for", meta_datte_pm$k, "studies"),
       paste("(Tau^2 = ", (formatC(meta_datte_pm$tau2, digits=2, format="f")), ", df = ", 
@@ -496,8 +514,10 @@ plottepm <- forestplot(text1tepm,
              graphwidth = unit(10,"cm"),
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plottepm
+```
 
 
+```{r overall_graph_REML, echo=FALSE, fig.height = 3, fig.width = 16}
 col1f <- c("Author", dat_m$Author, 
       paste("Overall Odds Ratio for", meta_datm_reml$k, "studies"),
       paste("(Tau^2 = ", (formatC(meta_datm_reml$tau2, digits=2, format="f")), ", df = ", 
@@ -574,7 +594,7 @@ col5f <- c("Weight(%)", paste(formatC(weights(meta_datm_reml), format='f', digit
 text1f <- cbind(col1f, col2f, col3f, col4f, col5f)
 
 cf <- structure(list(
-          mean = c(rep(NA, 1), exp(dat_m$y), meta_m$pred, rep(NA, 4), exp(dat_nm$y), meta_nm$pred, rep(NA, 4), exp(dat_te$y), meta_te$pred,NA),
+          mean = c(rep(NA, 1), exp(dat_m$yi), meta_m$pred, rep(NA, 4), exp(dat_nm$yi), meta_nm$pred, rep(NA, 4), exp(dat_te$yi), meta_te$pred,NA),
           lower = c(rep(NA, 1), exp(dat_m$ci.lb), meta_m$ci.lb, rep(NA, 4), exp(dat_nm$ci.lb), meta_nm$ci.lb, rep(NA, 4), exp(dat_te$ci.lb), meta_te$ci.lb, NA),
           upper = c(rep(NA, 1), exp(dat_m$ci.ub), meta_m$ci.ub, rep(NA, 4), exp(dat_nm$ci.ub), meta_nm$ci.ub, rep(NA, 4), exp(dat_te$ci.ub), meta_te$ci.ub, NA)),
           .Names = c("mean", "lower", "upper"),
@@ -594,7 +614,7 @@ plotf <- forestplot(text1f,
              hrzl_lines = list("2" = gpar (lwd=1, columns=1:6, col="black")),
              lineheight=unit(0.7,'cm'),
              boxsize = sizes1f,
-             line.margin = 2, 10, 18,
+             line.margin = c(2,10,18), 
              is.summary = c(T, F, F, F, T, T, T, T, T, F, F, F, T, T, T, T, T, F, F, F, T, T),
              align = c('l', rep('c', 2), 'l', 'l'),
              ci.vertices = TRUE,
@@ -604,7 +624,7 @@ plotf <- forestplot(text1f,
                               xlab = gpar(cex=0.9)),
              xticks = c(0.1,0.25, 0.50, 1, 2,4, 10),
              xlog=TRUE,
-             clip = c(0.2, 10),
+             clip = c(0.05,0.2, 10,20),
              grid = c(0.1,0.25, 0.50,  2,4,10),
              lwd.xaxis = 1,
              lwd.ci = 2.2,

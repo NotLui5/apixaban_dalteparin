@@ -1,0 +1,344 @@
+---
+title: "apixaban_dalteparin"
+author: "Luis Armando Figueroa"
+date: '2022-09-05'
+output: html_document
+---
+
+```{r libraries, include=FALSE}
+library(metafor)
+library(openxlsx)
+library(forestplot)
+library(dplyr)
+```
+
+```{r cleaning, include=FALSE}
+dat <- read.xlsx("Extraccion de datos texto completo_updated.xlsx", sheet = 2)
+
+dat_m <- subset(dat, Outcome == "Sangrado Mayor")
+dat_m
+
+dat_nm <- subset(dat, Outcome == "Sangrado no mayor")
+dat_nm
+
+dat_te <- subset(dat, Outcome == "rec TE")
+dat_te
+
+```
+
+```{r or, include=FALSE}
+dat_m <- escalc(measure="OR", ai=n1, bi=n2,
+              ci=e1, di=e2, data=dat_m)
+dat_m <- summary(dat_m)
+dat_m
+
+dat_nm <- escalc(measure="OR", ai=n1, bi=n2,
+                ci=e1, di=e2, data=dat_nm)
+dat_nm <- summary(dat_nm)
+dat_nm
+
+dat_te <- escalc(measure="OR", ai=n1, bi=n2,
+                 ci=e1, di=e2, data=dat_te)
+dat_te <- summary(dat_te)
+dat_te
+
+```
+
+```{r meta, include=FALSE}
+meta_datm_reml <- rma(yi, vi, method="REML", data=dat_m, test='knha')
+meta_datm_reml
+
+meta_datm_pm <- rma(yi, vi, method="PM", data=dat_m, test='knha')
+meta_datm_pm
+
+meta_datnm_reml <- rma(yi, vi, method="REML", data=dat_nm, test='knha')
+meta_datnm_reml
+
+meta_datnm_pm <- rma(yi, vi, method="PM", data=dat_nm, test='knha')
+meta_datnm_pm
+
+meta_datte_reml <- rma(yi, vi, method="REML", data=dat_te, test='knha')
+meta_datte_reml
+
+meta_datte_pm <- rma(yi, vi, method="PM", data=dat_te, test='knha')
+meta_datte_pm
+
+```
+
+```{r predict, include=FALSE}
+meta_m <- predict(meta_datm_reml, transf = exp, digits = 2)
+meta_m
+
+metapm_m <- predict(meta_datm_pm, transf = exp, digits = 2)
+metapm_m
+
+meta_nm <- predict(meta_datnm_reml, transf = exp, digits = 2)
+meta_nm
+
+metapm_nm <- predict(meta_datnm_pm, transf = exp, digits = 2)
+metapm_nm
+
+meta_te <- predict(meta_datte_reml, transf = exp, digits = 2)
+meta_te
+
+metapm_te <- predict(meta_datte_pm, transf = exp, digits = 2)
+metapm_te
+
+```
+
+```{r graphics, include=FALSE}
+col1m <- c("Author", dat_m$Author, 
+      paste("Overall Odds Ratio for", meta_datm_reml$k, "studies"),
+      paste("(Tau^2 = ", (formatC(meta_datm_reml$tau2, digits=2, format="f")), ", df = ", 
+            (meta_datm_reml$parms),
+            ", p ", (ifelse(meta_datm_reml$QEp < 0.001, 
+                            paste("< 0.001"),
+                            paste("= ", formatC(meta_datm_reml$QEp, digits=3, format="f")))),
+            "; ", "I^2", " = ", (formatC(meta_datm_reml$I2, digits=1, format="f")), "%)"))
+
+col2m <- c("Apixaban (n/N)",
+      paste(dat_m$e1,"/", dat_m$n1), paste0(sum(dat_m$e1), " / ", sum(dat_m$n1)), NA)
+
+col3m <- c("Dalteparin (n/N)",
+      paste(dat_m$e2,"/", dat_m$n2), paste0(sum(dat_m$e2), " / ", sum(dat_m$n2)), NA)
+
+col4m <- c("Odds Ratio (95% CI)", paste0(formatC(exp(dat_m$yi), digits = 2, format = "f"), 
+                                        " ( ",formatC(exp(dat_m$ci.lb), format='f', digits=2),
+                                        " - ", formatC(exp(dat_m$ci.ub), format='f',digits=2), " ) "),
+          paste(formatC(meta_m$pred, format = 'f', digits=2),
+            "(", formatC(meta_m$ci.lb, format = 'f', digits = 2),
+            "-", formatC(meta_m$ci.ub, format = 'f', digits = 2), ")"), NA)
+col5m <- c("Weight(%)", paste(formatC(weights(meta_datm_reml), format='f', digits = 1),'%'), NA, NA)
+
+text1m <- cbind(col1m, col2m, col3m, col4m, col5m)
+
+cm <- structure(list(
+          mean = c(rep(NA, 1), exp(dat_m$y), meta_m$pred,NA),
+          lower = c(rep(NA, 1), exp(dat_m$ci.lb), meta_m$ci.lb, NA),
+          upper = c(rep(NA, 1), exp(dat_m$ci.ub), meta_m$ci.ub, NA)),
+          .Names = c("mean", "lower", "upper"),
+          row.names = c(NA, -1L*nrow(text1m)),
+          class = "data.frame")
+
+sizes1m <- c(NA, (weights(meta_datm_reml)*0.020), 1, NA)
+
+plotm <- forestplot(text1m,
+             graph.pos = 4,
+             zero = 1,
+             cm,
+             new_page = TRUE,
+             colgap = unit(5, "mm"),
+             hrzl_lines = list("2" = gpar (lwd=1, columns=1:6, col="black")),
+             lineheight=unit(0.7,'cm'),
+             boxsize = sizes1m,
+             line.margin = 2,
+             is.summary = c(T, F, F, F, T, T),
+             align = c('l', rep('c', 2), 'l', 'l'),
+             ci.vertices = TRUE,
+             txt_gp = fpTxtGp(label =gpar (cex=0.9), 
+                              ticks = gpar(cex = 0.9, fontface="bold"),
+                              summary = gpar(cex = 0.9),
+                              xlab = gpar(cex=0.9)),
+             xticks = c(0.1,0.25, 0.50, 1, 2,4, 10),
+             xlog=TRUE,
+             clip = c(0.2, 10),
+             grid = c(0.1,0.25, 0.50,  2,4,10),
+             lwd.xaxis = 1,
+             lwd.ci = 2.2,
+             lwd.zero = 2,
+             graphwidth = unit(10,"cm"),
+             col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
+plotm
+
+
+col1mpm <- c("Author", dat_m$Author, 
+      paste("Overall Odds Ratio for", meta_datm_pm$k, "studies"),
+      paste("(Tau^2 = ", (formatC(meta_datm_pm$tau2, digits=2, format="f")), ", df = ", 
+            (meta_datm_pm$parms),
+            ", p ", (ifelse(meta_datm_pm$QEp < 0.001, 
+                            paste("< 0.001"),
+                            paste("= ", formatC(meta_datm_pm$QEp, digits=3, format="f")))),
+            "; ", "I^2", " = ", (formatC(meta_datm_pm$I2, digits=1, format="f")), "%)"))
+
+col2mpm <- c("Apixaban (n/N)",
+      paste(dat_m$e1,"/", dat_m$n1), paste0(sum(dat_m$e1), " / ", sum(dat_m$n1)), NA)
+
+col3mpm <- c("Dalteparin (n/N)",
+      paste(dat_m$e2,"/", dat_m$n2), paste0(sum(dat_m$e2), " / ", sum(dat_m$n2)), NA)
+
+col4mpm <- c("Odds Ratio (95% CI)", paste0(formatC(exp(dat_m$yi), digits = 2, format = "f"), 
+                                        " ( ",formatC(exp(dat_m$ci.lb), format='f', digits=2),
+                                        " - ", formatC(exp(dat_m$ci.ub), format='f',digits=2), " ) "),
+          paste(formatC(metapm_m$pred, format = 'f', digits=2),
+            "(", formatC(metapm_m$ci.lb, format = 'f', digits = 2),
+            "-", formatC(metapm_m$ci.ub, format = 'f', digits = 2), ")"), NA)
+col5mpm <- c("Weight(%)", paste(formatC(weights(meta_datm_pm), format='f', digits = 1),'%'), NA, NA)
+
+text1mpm <- cbind(col1mpm, col2mpm, col3mpm, col4mpm, col5mpm)
+
+cmpm <- structure(list(
+          mean = c(rep(NA, 1), exp(dat_m$y), metapm_m$pred,NA),
+          lower = c(rep(NA, 1), exp(dat_m$ci.lb), metapm_m$ci.lb, NA),
+          upper = c(rep(NA, 1), exp(dat_m$ci.ub), metapm_m$ci.ub, NA)),
+          .Names = c("mean", "lower", "upper"),
+          row.names = c(NA, -1L*nrow(text1mpm)),
+          class = "data.frame")
+
+sizes1mpm <- c(NA, (weights(meta_datm_pm)*0.010), 1, NA)
+
+plotmpm <- forestplot(text1mpm,
+             graph.pos = 4,
+             zero = 1,
+             cmpm,
+             new_page = TRUE,
+             colgap = unit(5, "mm"),
+             hrzl_lines = list("2" = gpar (lwd=1, columns=1:6, col="black")),
+             lineheight=unit(0.7,'cm'),
+             boxsize = sizes1mpm,
+             line.margin = 2,
+             is.summary = c(T, F, F, F, T, T),
+             align = c('l', rep('c', 2), 'l', 'l'),
+             ci.vertices = TRUE,
+             txt_gp = fpTxtGp(label =gpar (cex=0.9), 
+                              ticks = gpar(cex = 0.9, fontface="bold"),
+                              summary = gpar(cex = 0.9),
+                              xlab = gpar(cex=0.9)),
+             xticks = c(0.1,0.25, 0.50, 1, 2,4, 10),
+             xlog=TRUE,
+             clip = c(0.2, 10),
+             grid = c(0.1,0.25, 0.50,  2,4,10),
+             lwd.xaxis = 1,
+             lwd.ci = 2.2,
+             lwd.zero = 2,
+             graphwidth = unit(10,"cm"),
+             col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
+plotmpm
+
+
+col1nm <- c("Author", dat_nm$Author, 
+      paste("Overall Odds Ratio for", meta_datnm_reml$k, "studies"),
+      paste("(Tau^2 = ", (formatC(meta_datnm_reml$tau2, digits=2, format="f")), ", df = ", 
+            (meta_datnm_reml$parms),
+            ", p ", (ifelse(meta_datnm_reml$QEp < 0.001, 
+                            paste("< 0.001"),
+                            paste("= ", formatC(meta_datnm_reml$QEp, digits=3, format="f")))),
+            "; ", "I^2", " = ", (formatC(meta_datnm_reml$I2, digits=1, format="f")), "%)"))
+
+col2nm <- c("Apixaban (n/N)",
+      paste(dat_nm$e1,"/", dat_nm$n1), paste0(sum(dat_nm$e1), " / ", sum(dat_nm$n1)), NA)
+
+col3nm <- c("Dalteparin (n/N)",
+      paste(dat_nm$e2,"/", dat_nm$n2), paste0(sum(dat_nm$e2), " / ", sum(dat_nm$n2)), NA)
+
+col4nm <- c("Odds Ratio (95% CI)", paste0(formatC(exp(dat_nm$yi), digits = 2, format = "f"), 
+                                        " ( ",formatC(exp(dat_nm$ci.lb), format='f', digits=2),
+                                        " - ", formatC(exp(dat_nm$ci.ub), format='f',digits=2), " ) "),
+          paste(formatC(meta_nm$pred, format = 'f', digits=2),
+            "(", formatC(meta_nm$ci.lb, format = 'f', digits = 2),
+            "-", formatC(meta_nm$ci.ub, format = 'f', digits = 2), ")"), NA)
+col5nm <- c("Weight(%)", paste(formatC(weights(meta_datnm_reml), format='f', digits = 1),'%'), NA, NA)
+
+text1nm <- cbind(col1nm, col2nm, col3nm, col4nm, col5nm)
+
+cnm <- structure(list(
+          mean = c(rep(NA, 1), exp(dat_nm$y), meta_nm$pred,NA),
+          lower = c(rep(NA, 1), exp(dat_nm$ci.lb), meta_nm$ci.lb, NA),
+          upper = c(rep(NA, 1), exp(dat_nm$ci.ub), meta_nm$ci.ub, NA)),
+          .Names = c("mean", "lower", "upper"),
+          row.names = c(NA, -1L*nrow(text1nm)),
+          class = "data.frame")
+
+sizes1nm <- c(NA, (weights(meta_datnm_reml)*0.015), 1, NA)
+
+plotnm <- forestplot(text1nm,
+             graph.pos = 4,
+             zero = 1,
+             cnm,
+             new_page = TRUE,
+             colgap = unit(5, "mm"),
+             hrzl_lines = list("2" = gpar (lwd=1, columns=1:6, col="black")),
+             lineheight=unit(0.7,'cm'),
+             boxsize = sizes1nm,
+             line.margin = 2,
+             is.summary = c(T, F, F, F, T, T),
+             align = c('l', rep('c', 2), 'l', 'l'),
+             ci.vertices = TRUE,
+             txt_gp = fpTxtGp(label =gpar (cex=0.9), 
+                              ticks = gpar(cex = 0.9, fontface="bold"),
+                              summary = gpar(cex = 0.9),
+                              xlab = gpar(cex=0.9)),
+             xticks = c(0.1,0.25, 0.50, 1, 2,4, 10),
+             xlog=TRUE,
+             clip = c(0.2, 10),
+             grid = c(0.1,0.25, 0.50,  2,4,10),
+             lwd.xaxis = 1,
+             lwd.ci = 2.2,
+             lwd.zero = 2,
+             graphwidth = unit(10,"cm"),
+             col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
+plotnm
+
+
+col1te <- c("Author", dat_te$Author, 
+      paste("Overall Odds Ratio for", meta_datte_reml$k, "studies"),
+      paste("(Tau^2 = ", (formatC(meta_datte_reml$tau2, digits=2, format="f")), ", df = ", 
+            (meta_datte_reml$parms),
+            ", p ", (ifelse(meta_datte_reml$QEp < 0.001, 
+                            paste("< 0.001"),
+                            paste("= ", formatC(meta_datte_reml$QEp, digits=3, format="f")))),
+            "; ", "I^2", " = ", (formatC(meta_datte_reml$I2, digits=1, format="f")), "%)"))
+
+col2te <- c("Apixaban (n/N)",
+      paste(dat_te$e1,"/", dat_te$n1), paste0(sum(dat_te$e1), " / ", sum(dat_te$n1)), NA)
+
+col3te <- c("Dalteparin (n/N)",
+      paste(dat_te$e2,"/", dat_te$n2), paste0(sum(dat_te$e2), " / ", sum(dat_te$n2)), NA)
+
+col4te <- c("Odds Ratio (95% CI)", paste0(formatC(exp(dat_te$yi), digits = 2, format = "f"), 
+                                        " ( ",formatC(exp(dat_te$ci.lb), format='f', digits=2),
+                                        " - ", formatC(exp(dat_te$ci.ub), format='f',digits=2), " ) "),
+          paste(formatC(meta_te$pred, format = 'f', digits=2),
+            "(", formatC(meta_te$ci.lb, format = 'f', digits = 2),
+            "-", formatC(meta_te$ci.ub, format = 'f', digits = 2), ")"), NA)
+col5te <- c("Weight(%)", paste(formatC(weights(meta_datte_reml), format='f', digits = 1),'%'), NA, NA)
+
+text1te <- cbind(col1te, col2te, col3te, col4te, col5te)
+
+cte <- structure(list(
+          mean = c(rep(NA, 1), exp(dat_te$y), meta_te$pred,NA),
+          lower = c(rep(NA, 1), exp(dat_te$ci.lb), meta_te$ci.lb, NA),
+          upper = c(rep(NA, 1), exp(dat_te$ci.ub), meta_te$ci.ub, NA)),
+          .Names = c("mean", "lower", "upper"),
+          row.names = c(NA, -1L*nrow(text1te)),
+          class = "data.frame")
+
+sizes1te <- c(NA, (weights(meta_datte_reml)*0.020), 1, NA)
+
+plotte <- forestplot(text1te,
+             graph.pos = 4,
+             zero = 1,
+             cte,
+             new_page = TRUE,
+             colgap = unit(5, "mm"),
+             hrzl_lines = list("2" = gpar (lwd=1, columns=1:6, col="black")),
+             lineheight=unit(0.7,'cm'),
+             boxsize = sizes1te,
+             line.margin = 2,
+             is.summary = c(T, F, F, F, T, T),
+             align = c('l', rep('c', 2), 'l', 'l'),
+             ci.vertices = TRUE,
+             txt_gp = fpTxtGp(label =gpar (cex=0.9), 
+                              ticks = gpar(cex = 0.9, fontface="bold"),
+                              summary = gpar(cex = 0.9),
+                              xlab = gpar(cex=0.9)),
+             xticks = c(0.1,0.25, 0.50, 1, 2,4, 10),
+             xlog=TRUE,
+             clip = c(0.2, 10),
+             grid = c(0.1,0.25, 0.50,  2,4,10),
+             lwd.xaxis = 1,
+             lwd.ci = 2.2,
+             lwd.zero = 2,
+             graphwidth = unit(10,"cm"),
+             col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
+plotte
+```
