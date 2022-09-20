@@ -68,11 +68,7 @@ meta_datm_reml
 meta_datm_pm <- rma(yi, vi, method="PM", data=dat_m, test='knha')
 meta_datm_pm
 
-<<<<<<< HEAD
-meta_datm2_reml <- rma(yi, vi, method="REML", data=dat_m2, test = 'knha')
-=======
 meta_datm2_reml <- rma(yi, vi, method="REML", data=dat_m2, test='knha')
->>>>>>> 1f37a0f65d7f422e795ff9c0ee260d14b440d1fa
 meta_datm2_reml
 
 meta_datnm_reml <- rma(yi, vi, method="REML", data=dat_nm, test='knha')
