@@ -118,6 +118,7 @@ meta_te2
 <details>
 
 <summary><b>Figure 1 -</b> Odds Ratio of developing Major Bleeding, No Major Bleeding and Recurrent Venous Thromboembolism Events in the Dalteparin group vs the Apixaban group </summary>
+
 ```{r overall_graph_REML, echo=FALSE, fig.height = 6.5, fig.width = 13}
 col1f <- c("Author", dat_m$Author, 
       paste("Overall Odds Ratio for", meta_datm_reml$k, "studies"),
@@ -235,6 +236,7 @@ plotf <- forestplot(text1f,
 plotf
 
 ```
+
 </details>
 
 
@@ -243,6 +245,7 @@ plotf
 <details>
 
 <summary><b>Figure 3-</b> Odds Ratio of developing Major Bleeding Events in the Dalteparin group vs the Apixaban group </summary>
+
 ```{r major_bleeding_graphs_reml, echo=FALSE, fig.height = 2, fig.width = 13}
 col1m <- c("Author", dat_m$Author, 
       paste("Overall Odds Ratio for", meta_datm_reml$k, "studies"),
@@ -307,6 +310,7 @@ plotm <- forestplot(text1m,
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotm
 ```
+
 </details>
 
 
@@ -315,6 +319,7 @@ plotm
 <details>
 
 <summary><b>Figure 4-</b> Odds Ratio of developing Major Bleeding Events in the Dalteparin group vs the Apixaban group </summary>
+
 ```{r major_bleeding_graphs_pm, echo=FALSE, fig.height = 2, fig.width = 13}
 col1mpm <- c("Author", dat_m$Author, 
       paste("Overall Odds Ratio for", meta_datm_pm$k, "studies"),
@@ -379,6 +384,7 @@ plotmpm <- forestplot(text1mpm,
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotmpm
 ```
+
 </details>
 
 
@@ -387,6 +393,7 @@ plotmpm
 <details>
 
 <summary><b>Figure 5-</b> Odds Ratio of developing No Major Bleeding Events in the Dalteparin group vs the Apixaban group </summary>
+
 ```{r no_major_bleeding_graphs_reml, echo=FALSE, fig.height = 2, fig.width = 13}
 col1nm <- c("Author", dat_nm$Author, 
       paste("Overall Odds Ratio for", meta_datnm_reml$k, "studies"),
@@ -452,6 +459,7 @@ plotnm <- forestplot(text1nm,
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotnm
 ```
+
 </details>
 
 
@@ -460,6 +468,7 @@ plotnm
 <details>
 
 <summary><b>Figure 6-</b> Odds Ratio of developing No Major Bleeding Events in the Dalteparin group vs the Apixaban group </summary>
+
 ```{r no_major_bleeding_graphs_pm, echo=FALSE, fig.height = 2, fig.width = 13}
 col1nmpm <- c("Author", dat_nm$Author, 
       paste("Overall Odds Ratio for", meta_datnm_pm$k, "studies"),
@@ -524,6 +533,7 @@ plotnmpm <- forestplot(text1nmpm,
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotnmpm
 ```
+
 </details>
 
 
@@ -532,6 +542,7 @@ plotnmpm
 <details>
 
 <summary><b>Figure 7-</b> Odds Ratio of developing Recurrent Venous Thromboembolism Events in the Dalteparin group vs the Apixaban group </summary>
+
 ```{r TE_recurrence_REML, echo=FALSE, fig.height = 2, fig.width = 13}
 col1te <- c("Author", dat_te$Author, 
       paste("Overall Odds Ratio for", meta_datte_reml$k, "studies"),
@@ -597,6 +608,7 @@ plotte <- forestplot(text1te,
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plotte
 ```
+
 </details>
 
 
@@ -605,6 +617,7 @@ plotte
 <details>
 
 <summary><b>Figure 8-</b> Odds Ratio of developing Recurrent Venous Thromboembolism Events in the Dalteparin group vs the Apixaban group </summary>
+
 ```{r TE_recurrence_PM, echo=FALSE, fig.height = 2, fig.width = 13}
 col1tepm <- c("Author", dat_te$Author, 
       paste("Overall Odds Ratio for", meta_datte_pm$k, "studies"),
@@ -669,4 +682,5 @@ plottepm <- forestplot(text1tepm,
              col=fpColors(box="black",line="grey", zero = 'dodgerblue4', axes="grey20", summary="black"))
 plottepm
 ```
+
 </details>

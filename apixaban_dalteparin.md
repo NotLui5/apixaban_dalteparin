@@ -12,7 +12,9 @@ Overall Graphs in REML
 Bleeding and Recurrent Venous Thromboembolism Events in the Dalteparin
 group vs the Apixaban group
 </summary>
+
 ![](8%20Output%20Figures/overall_graph_REML-1.svg)<!-- -->
+
 </details>
 <h4>
 Major bleeding graph in REML
@@ -22,7 +24,9 @@ Major bleeding graph in REML
 <b>Figure 3-</b> Odds Ratio of developing Major Bleeding Events in the
 Dalteparin group vs the Apixaban group
 </summary>
+
 ![](8%20Output%20Figures/major_bleeding_graphs_reml-1.svg)<!-- -->
+
 </details>
 <h4>
 Major bleeding graph in PM
@@ -32,7 +36,9 @@ Major bleeding graph in PM
 <b>Figure 4-</b> Odds Ratio of developing Major Bleeding Events in the
 Dalteparin group vs the Apixaban group
 </summary>
+
 ![](8%20Output%20Figures/major_bleeding_graphs_pm-1.svg)<!-- -->
+
 </details>
 <h4>
 No Major bleeding graph in REML
@@ -42,7 +48,9 @@ No Major bleeding graph in REML
 <b>Figure 5-</b> Odds Ratio of developing No Major Bleeding Events in
 the Dalteparin group vs the Apixaban group
 </summary>
+
 ![](8%20Output%20Figures/no_major_bleeding_graphs_reml-1.svg)<!-- -->
+
 </details>
 <h4>
 No Major bleeding graph in PM
@@ -52,7 +60,9 @@ No Major bleeding graph in PM
 <b>Figure 6-</b> Odds Ratio of developing No Major Bleeding Events in
 the Dalteparin group vs the Apixaban group
 </summary>
+
 ![](8%20Output%20Figures/no_major_bleeding_graphs_pm-1.svg)<!-- -->
+
 </details>
 <h4>
 Recurrent Venous Thromboembolism graph in REML
@@ -62,7 +72,9 @@ Recurrent Venous Thromboembolism graph in REML
 <b>Figure 7-</b> Odds Ratio of developing Recurrent Venous
 Thromboembolism Events in the Dalteparin group vs the Apixaban group
 </summary>
+
 ![](8%20Output%20Figures/TE_recurrence_REML-1.svg)<!-- -->
+
 </details>
 <h4>
 Recurrent Venous Thromboembolism graph in PM
@@ -72,5 +84,7 @@ Recurrent Venous Thromboembolism graph in PM
 <b>Figure 8-</b> Odds Ratio of developing Recurrent Venous
 Thromboembolism Events in the Dalteparin group vs the Apixaban group
 </summary>
+
 ![](8%20Output%20Figures/TE_recurrence_PM-1.svg)<!-- -->
+
 </details>
