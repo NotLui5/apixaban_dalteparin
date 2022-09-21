@@ -2,7 +2,7 @@
 title: "apixaban_dalteparin"
 author: "Luis Armando Figueroa"
 date: '2022-09-05'
-output: html_document
+output: github_document
 ---
 
 ```{r libraries, include=FALSE}
