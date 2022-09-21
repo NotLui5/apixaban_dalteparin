@@ -8,7 +8,7 @@ Ponce](https://twitter.com/PonceOJ)</i>
 <h2>
 Overall Forestplot
 </h2>
-<details>
+<details open>
 <summary>
 <b>Figure 1 -</b> Odds of developing <b>Major Bleeding</b>, <b>Non-Major
 Bleeding</b> and <b>Recurrence of Venous Thromboembolism (VTE)</b>
