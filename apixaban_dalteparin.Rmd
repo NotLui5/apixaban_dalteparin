@@ -1,9 +1,10 @@
 ---
 title: "Meta-analysis of Dalteparin vs. Apixaban"
-author: "Luis Armando Figueroa & Oscar J. Ponce"
-date: '2022-09-05'
 output: github_document
 ---
+
+<i>Analysis and visualization developed by [Luis Figueroa](https://twitter.com/LuisFig1706) with the help of [Oscar J. Ponce](https://twitter.com/PonceOJ)</i>
+
 
 ```{r libraries, include=FALSE}
 library(metafor)
@@ -113,7 +114,7 @@ meta_te2 <- predict(meta_datte2_reml, transf = exp, digits = 2)
 meta_te2
 ```
 
-<br>
+
 <h2>Overall Forestplot</h2>
 
 <details>
