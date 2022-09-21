@@ -1,9 +1,10 @@
 ---
 title: "Meta-analysis of Dalteparin vs. Apixaban"
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = paste0(dirname(inputFile),'/README.md')) })
 output: github_document
 ---
 
-<i>Analysis and visualization developed by [Luis A. Figueroa](https://twitter.com/LuisFig1706) with the help of [Oscar J. Ponce](https://twitter.com/PonceOJ)</i>
+<i>Analysis and visualization developed by [Luis A. Figueroa](https://twitter.com/LuisFig1706) and [Oscar J. Ponce](https://twitter.com/PonceOJ)</i>
 
 
 ```{r libraries, include=FALSE}
@@ -13,6 +14,7 @@ library(forestplot)
 library(dplyr)
 
 knitr::opts_chunk$set(fig.path = "8 Output Figures/", dev='svg') # dev = 'png'
+
 ```
 
 ```{r cleaning, include=FALSE}
