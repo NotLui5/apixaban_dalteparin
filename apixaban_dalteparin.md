@@ -1,7 +1,7 @@
 Meta-analysis of Dalteparin vs. Apixaban
 ================
 
-<i>Analysis and visualization developed by [Luis
+<i>Analysis and visualization developed by [Luis A.
 Figueroa](https://twitter.com/LuisFig1706) with the help of [Oscar J.
 Ponce](https://twitter.com/PonceOJ)</i>
 

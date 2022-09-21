@@ -3,7 +3,7 @@ title: "Meta-analysis of Dalteparin vs. Apixaban"
 output: github_document
 ---
 
-<i>Analysis and visualization developed by [Luis Figueroa](https://twitter.com/LuisFig1706) with the help of [Oscar J. Ponce](https://twitter.com/PonceOJ)</i>
+<i>Analysis and visualization developed by [Luis A. Figueroa](https://twitter.com/LuisFig1706) with the help of [Oscar J. Ponce](https://twitter.com/PonceOJ)</i>
 
 
 ```{r libraries, include=FALSE}
