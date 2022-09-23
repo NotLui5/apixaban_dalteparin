@@ -5,6 +5,11 @@ Meta-analysis of Dalteparin vs. Apixaban
 Figueroa](https://twitter.com/LuisFig1706) and [Oscar J.
 Ponce](https://twitter.com/PonceOJ)</i>
 
+The purpose of this site is to make our meta-analysis as transparent as
+possible. All information or documents used, from the protocol to the
+final publication, will be available here. If further information is
+needed, please do not hesitate to contact us.
+
 <h2>
 Overall Forestplot
 </h2>
