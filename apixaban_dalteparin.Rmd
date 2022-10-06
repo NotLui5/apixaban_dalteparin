@@ -1,9 +1,12 @@
 ---
 title: "Meta-analysis of Dalteparin vs. Apixaban"
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = paste0(dirname(inputFile),'/README.md')) })
 output: github_document
 ---
 
-<i>Analysis and visualization developed by [Luis Figueroa](https://twitter.com/LuisFig1706) with the help of [Oscar J. Ponce](https://twitter.com/PonceOJ)</i>
+<i>Analysis and visualization developed by [Luis A. Figueroa](https://twitter.com/LuisFig1706) and [Oscar J. Ponce](https://twitter.com/PonceOJ)</i>
+
+The purpose of this site is to make our meta-analysis as transparent as possible. All information or documents used, from the protocol to the final publication, will be available here. If further information is needed, please do not hesitate to contact us.
 
 
 ```{r libraries, include=FALSE}
@@ -13,6 +16,7 @@ library(forestplot)
 library(dplyr)
 
 knitr::opts_chunk$set(fig.path = "8 Output Figures/", dev='svg') # dev = 'png'
+
 ```
 
 ```{r cleaning, include=FALSE}
@@ -117,7 +121,7 @@ meta_te2
 
 <h2>Overall Forestplot</h2>
 
-<details>
+<details open>
 
 <summary><b>Figure 1 -</b> Odds of developing <b>Major Bleeding</b>, <b>Non-Major Bleeding</b> and <b>Recurrence of Venous Thromboembolism (VTE)</b> events in the Dalteparin group vs. the Apixaban group</summary>
 <br>
